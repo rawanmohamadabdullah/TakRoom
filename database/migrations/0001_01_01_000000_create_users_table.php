@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->default(1)->constraind('roles');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->decimal('balance',8,2)->default(0);
-            $table->enum('role',['Customer','Product_Supplier'])->default('Customer');
-            $table->string('room_number');
-            $table->string('bulding');
+            $table->enum('role', ['customer', 'supplier', 'admin'])->default('customer');
+            $table->decimal('balance', 10, 2)->default(0.00);
+            $table->boolean('is_banned')->default(false);
+            $table->string('room_number')->nullable();
+            $table->string('building')->nullable();
             $table->rememberToken();
             $table->timestamps();
-
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

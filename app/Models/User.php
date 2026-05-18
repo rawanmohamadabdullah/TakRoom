@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'balance',
+        'is_banned',
+        'room_number',
+        'building',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -46,10 +50,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function role(){
-        return $this->belongsTo(UserRole::class);
+
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'supplier_id');
     }
-
-
-    protected $guarder = ['role'];
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id');
+    }
 }
